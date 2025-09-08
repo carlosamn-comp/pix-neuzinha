@@ -60,7 +60,6 @@ export default async function handler(req: any, res: any) {
       message: "OK",
       accessToken,
       balances,
-      apiKey, // opcional (remova em produção)
     });
   } catch (err: any) {
     return res.status(500).json({ error: "Server error", details: err.message });
