@@ -1,0 +1,161 @@
+.donation-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 480px;
+  margin: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  color: #1a1a1a;
+}
+
+.logo span {
+  color: #0c4408;
+  font-family: cursive;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.input-wrapper {
+  margin-top: 25px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #004d3c !important;
+  color: white !important;
+  border: none !important;
+}
+
+
+
+.btn-secondary {
+  background-color: white !important;
+  color: #004d3c !important;
+  border: 2px solid #004d3c !important;
+}
+
+
+
+.btn-highlight {
+  position: relative;
+  border: none;
+  color: rgb(255, 255, 255) !important;
+  background-color: #004d3c !important;
+  overflow: visible;
+  z-index: 1;
+}
+
+.btn-highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(64, 216, 221, 0.3),
+    transparent
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: flowGreen 4s linear infinite;
+  z-index: 0;
+}
+
+@keyframes flowGreen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+
+.btn-highlight > * {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
+
+.neuzinha-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  filter: blur(2px) brightness(0.85);
+  object-fit: cover;
+  height: 180px;
+}
+
+.btn-highlight .badge-custom,
+.btn-secondary .badge-custom {
+  position: absolute;
+  top: -6px;
+  right: 12px;
+  background-color: #84ffea;
+  color: #000000;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
+.value-option {
+  min-width: 80px;
+  padding: 10px;
+  border: 2px solid #004d3c;
+  color: #004d3c;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.value-option.active,
+.value-option:hover {
+  background-color: #004d3c;
+  color: white;
+  font-weight: bold;
+}
+
+.custom-input {
+  width: 150px;
+}
+
