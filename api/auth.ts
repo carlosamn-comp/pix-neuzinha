@@ -22,22 +22,6 @@ export default async function handler(req: any, res: any) {
     }
     const apiKey: string = authData.apiKey;
 
-    // 2) CONNECT TOKEN
-    const ctRes = await fetch("https://api.pluggy.ai/connect_token", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-    });
-    const ctData = await ctRes.json();
-    if (!ctRes.ok) {
-      return res.status(ctRes.status).json({ error: "Connect token failed", details: ctData });
-    }
-    const connectToken: string | null =
-      ctData.connectToken ?? ctData.accessToken ?? ctData.token ?? null;
-
     // 3) BALANCES (somente saldo de cada conta)
     const accountIds = [ACCOUNT_1, ACCOUNT_2];
     const balances = await Promise.all(
@@ -56,7 +40,6 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).json({
       message: "OK",
-      connectToken,
       balances,  // Retorna a lista apenas com os saldos
     });
   } catch (err: any) {

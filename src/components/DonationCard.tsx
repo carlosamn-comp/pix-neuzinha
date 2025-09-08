@@ -43,13 +43,6 @@ export default function DonationCard() {
         <div className="logo">
           <span>Pix</span> Neuzinha
         </div>
-
-        {/* Exibe o total arrecadado no formato de moeda */}
-        <div className="mt-2" style={{ fontSize: '0.95rem' }}>
-          <strong>Total arrecadado:</strong>{' '}
-          {totalBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-        </div>
-
         <div className="description mt-2">
           Todas as doações vão diretamente para a <strong>poupança da Neuzinha</strong> via Pix.
         </div>
