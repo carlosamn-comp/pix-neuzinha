@@ -9,7 +9,7 @@ const META = 100_000; // A meta de arrecadação (R$ 100.000)
 type ApiData = { message?: string; connectToken?: string | null; balances?: number[] };
 
 export default function DonationCard() {
-  const [selectedValue, setSelectedValue] = useState('30');
+  const [selectedValue, setSelectedValue] = useState('30');  // Valor da doação, seja do botão ou do input
   const [apiData, setApiData] = useState<ApiData | null>(null);  // Dados que virão do backend (message, connectToken, balances)
 
   // Busca tudo do backend (connectToken/balances)
@@ -47,6 +47,14 @@ export default function DonationCard() {
     }
   };
 
+  // Função que lida com a mudança do input
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (!isNaN(Number(value))) {
+      setSelectedValue(value); // Atualiza o selectedValue com o valor do input
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Barra de progresso que exibe a porcentagem do total arrecadado */}
@@ -64,7 +72,11 @@ export default function DonationCard() {
         <DonationButtons selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
 
         {/* Formulário para efetuar a doação mensal */}
-        <DonationForm handleDoarMensal={handleDoarMensal} />
+        <DonationForm 
+          handleDoarMensal={handleDoarMensal} 
+          selectedValue={selectedValue}  // Passa o valor atual do selectedValue
+          handleInputChange={handleInputChange}  // Passa a função de mudança do input
+        />
       </div>
     </div>
   );
