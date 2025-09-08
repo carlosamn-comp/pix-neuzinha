@@ -29,9 +29,22 @@ export default function DonationCard() {
   // Calcula a porcentagem de progresso com base no total arrecadado
   const percent = useMemo(() => Math.min(100, (totalBalance / META) * 100), [totalBalance]);
 
+  // Função para chamar o backend e criar o pagamento
   const handleDoarMensal = async () => {
-    // Aqui continua sua lógica de pagamento (quando você estiver pronto para integrar com o backend)
-    console.log('Doação mensal selecionada:', selectedValue);
+    const response = await fetch('/api/payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ selectedValue }) // Envia o valor selecionado
+    });
+    
+    const data = await response.json();
+    
+    if (data.paymentUrl) {
+      // Redireciona diretamente para o paymentUrl recebido do backend
+      window.location.href = data.paymentUrl;
+    } else {
+      console.error('Erro ao criar pagamento:', data);
+    }
   };
 
   return (
