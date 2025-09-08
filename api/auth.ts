@@ -35,10 +35,10 @@ export default async function handler(req: any, res: any) {
     if (!ctRes.ok) {
       return res.status(ctRes.status).json({ error: "Connect token failed", details: ctData });
     }
-    const accessToken: string | null =
-      ctData.accessToken ?? null;
+    const connectToken: string | null =
+      ctData.connectToken ?? ctData.accessToken ?? ctData.token ?? null;
 
-    // 3) BALANCES (sempre das duas contas)
+    // 3) BALANCES (somente saldo de cada conta)
     const accountIds = [ACCOUNT_1, ACCOUNT_2];
     const balances = await Promise.all(
       accountIds.map(async (id) => {
@@ -48,16 +48,19 @@ export default async function handler(req: any, res: any) {
         });
         const d = await r.json();
         if (!r.ok) return { accountId: id, error: d };
+
+        // Só retorna o saldo e não os dados completos
         return {
           accountId: id,
-          balance: d.balance ?? null,
-          data: d, // deixe para debug; remova em prod se quiser
+          balance: d.balance ?? null, // retorna apenas o valor de balance
         };
       })
     );
 
     return res.status(200).json({
       message: "OK",
+      connectToken,
+      balances: balances.map(b => b.balance), // Mapeia apenas os saldos
     });
   } catch (err: any) {
     return res.status(500).json({ error: "Server error", details: err.message });
