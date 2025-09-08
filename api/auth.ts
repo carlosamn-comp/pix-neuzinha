@@ -1,4 +1,13 @@
-export default function handler(req, res) {
+import pluggy from '@api/pluggy';
+
+pluggy.authCreate({
+  clientId: process.env.CLIENT_ID || '',
+  clientSecret: process.env.CLIENT_SECRET || '',
+})
+  .then(({ data }) => console.log(data))
+  .catch(err => console.error(err));;
+
+/*export default function handler(req, res) {
   const options = {
   method: 'POST',
   headers: {accept: 'application/json', 'content-type': 'application/json'},
@@ -15,3 +24,4 @@ fetch('https://api.pluggy.ai/auth', options)
   res.status(200).json({ message: 'BACKEND EBAAA!' });
 }
 
+*/
