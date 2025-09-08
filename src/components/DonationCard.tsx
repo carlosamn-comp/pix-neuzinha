@@ -60,8 +60,8 @@ export default function DonationCard() {
           Todas as doações vão diretamente para a <strong>poupança da Neuzinha</strong> via Pix.
         </div>
 
-        {/* Botões para escolher o valor da doação */}
-        <DonationButtons selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
+        {/* Passando handleDoarMensal para DonationButtons */}
+        <DonationButtons selectedValue={selectedValue} setSelectedValue={setSelectedValue} handleDonate={handleDoarMensal} />
 
         {/* Formulário para efetuar a doação mensal */}
         <DonationForm handleDoarMensal={handleDoarMensal} />
