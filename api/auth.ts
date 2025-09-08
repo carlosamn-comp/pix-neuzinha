@@ -49,18 +49,15 @@ export default async function handler(req: any, res: any) {
         const d = await r.json();
         if (!r.ok) return { accountId: id, error: d };
 
-        // Só retorna o saldo e não os dados completos
-        return {
-          accountId: id,
-          balance: d.balance ?? null, // retorna apenas o valor de balance
-        };
+        // Retorna apenas o saldo
+        return d.balance ?? 0;
       })
     );
 
     return res.status(200).json({
       message: "OK",
       connectToken,
-      balances: balances.map(b => b.balance), // Mapeia apenas os saldos
+      balances,  // Retorna a lista apenas com os saldos
     });
   } catch (err: any) {
     return res.status(500).json({ error: "Server error", details: err.message });

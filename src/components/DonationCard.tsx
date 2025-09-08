@@ -6,14 +6,13 @@ import './DonationCard.css';
 
 const META = 100_000; // A meta de arrecadação (R$ 100.000)
 
-type BalanceItem = { accountId: string; balance?: number | null };
-type ApiData = { message?: string; connectToken?: string | null; balances?: BalanceItem[] };
+type ApiData = { message?: string; connectToken?: string | null; balances?: number[] };
 
 export default function DonationCard() {
   const [selectedValue, setSelectedValue] = useState('30');
   const [apiData, setApiData] = useState<ApiData | null>(null);  // Dados que virão do backend (message, connectToken, balances)
 
-  // Busca tudo do backend (apiKey/connectToken/balances), mas usaremos só balances
+  // Busca tudo do backend (connectToken/balances)
   useEffect(() => {
     fetch('/api/auth', { method: 'GET' })
       .then(r => r.json())
@@ -24,7 +23,7 @@ export default function DonationCard() {
   // Soma dos balances vindos do backend
   const totalBalance = useMemo(() => {
     if (!apiData?.balances) return 0;  // Se não houver balances, o total é 0
-    return apiData.balances.reduce((acc, b) => acc + (b.balance ?? 0), 0);  // Soma os balances das contas
+    return apiData.balances.reduce((acc, b) => acc + b, 0);  // Soma os balances das contas
   }, [apiData]);
 
   // Calcula a porcentagem de progresso com base no total arrecadado
