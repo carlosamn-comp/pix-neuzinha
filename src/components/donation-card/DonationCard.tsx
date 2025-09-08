@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './DonationCard.css';
 import { useEffect, useState } from 'react';
-
+import { fetchConnectToken } from '../../services/api';
 
 export default function DonationCard() {
 
@@ -17,11 +17,11 @@ export default function DonationCard() {
   }
 
   useEffect(() => {
-    fetch('/api/auth')
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  fetchConnectToken().then(data => {
+    console.log("Connect token:", data);
+  });
+}, []);
+
 
   return (
     <div className="donation-card">
