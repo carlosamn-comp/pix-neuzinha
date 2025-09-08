@@ -20,7 +20,7 @@ export default function DonationCard() {
   }
 
   useEffect(() => {
-    fetch('/api/auth') // ou /api/connect-token, dependendo de onde vc uniu as chamadas
+    fetch('/api/auth') 
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.error('Error fetching data:', error));
