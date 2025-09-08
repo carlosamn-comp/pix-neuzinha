@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "pluggy",
+      "source": "@pluggy/v1.0#aqck4r1ymf4epdjf",
+      "integrity": "sha512-7DQBD5JGSSuyCxRhZaYQOdoBqU0RZRM6RLiYPrDIs0RyY7IAanGDuVsuzK4Zn+dpz540E8oK6jSmeHTypdBxig==",
+      "installerVersion": "6.1.3"
+    }
+  ]
+}
