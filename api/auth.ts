@@ -35,8 +35,8 @@ export default async function handler(req: any, res: any) {
     if (!ctRes.ok) {
       return res.status(ctRes.status).json({ error: "Connect token failed", details: ctData });
     }
-    const connectToken: string | null =
-      ctData.connectToken ?? null;
+    const accessToken: string | null =
+      ctData.accessToken ?? null;
 
     // 3) BALANCES (sempre das duas contas)
     const accountIds = [ACCOUNT_1, ACCOUNT_2];
@@ -58,7 +58,7 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).json({
       message: "OK",
-      connectToken,
+      accessToken,
       balances,
       apiKey, // opcional (remova em produção)
     });
