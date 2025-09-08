@@ -1,13 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './DonationCard.css';
 import { useEffect, useState } from 'react';
-import { fetchConnectToken } from '../../services/api';
+
+interface ApiData {
+  message: string;
+  token?: string;
+}
 
 export default function DonationCard() {
-
   const [selectedValue, setSelectedValue] = useState('30');
-  const [data, setData] = useState<{message: string} | null>(null);
-  
+  const [data, setData] = useState<ApiData | null>(null);
+
   function handleDoarUnicoClick() {
     console.log(`Doar único: R$${selectedValue}`);
   }
@@ -17,20 +20,32 @@ export default function DonationCard() {
   }
 
   useEffect(() => {
-  fetchConnectToken().then(data => {
-    console.log("Connect token:", data);
-  });
-}, []);
-
+    fetch('/api/auth') // ou /api/connect-token, dependendo de onde vc uniu as chamadas
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
   return (
     <div className="donation-card">
-      <div className="logo"><span>Pix</span>
-      {data?.message && <span className="ms-2">({data.message})</span>}
-       Neuzinha</div>
-      <div className="description">
+      <div className="logo">
+        <span>Pix</span> Neuzinha
+      </div>
+
+      {/* aqui aparece a mensagem e o token */}
+      {data && (
+        <div className="mt-2" style={{ fontSize: '0.9rem', color: '#333' }}>
+          <div><strong>Mensagem:</strong> {data.message}</div>
+          {data.token && (
+            <div><strong>Token:</strong> <code>{data.token}</code></div>
+          )}
+        </div>
+      )}
+
+      <div className="description mt-3">
         Todas as doações vão diretamente para a <strong>poupança da Neuzinha</strong> via Pix.
       </div>
+
       <div className="mt-4">
         <label className="form-label">Escolha o valor:</label>
         <div className="d-flex flex-wrap gap-2 justify-content-center">
@@ -38,8 +53,7 @@ export default function DonationCard() {
             <button
               key={v}
               type="button"
-              className={`btn btn-outline-success value-option ${selectedValue === v.toString() ? 'active' : ''
-                }`}
+              className={`btn btn-outline-success value-option ${selectedValue === v.toString() ? 'active' : ''}`}
               onClick={() => setSelectedValue(v.toString())}
             >
               R$ {v}
@@ -57,6 +71,5 @@ export default function DonationCard() {
         </div>
       </div>
     </div>
-
   );
 }
