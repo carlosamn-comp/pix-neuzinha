@@ -58,8 +58,6 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).json({
       message: "OK",
-      accessToken,
-      balances,
     });
   } catch (err: any) {
     return res.status(500).json({ error: "Server error", details: err.message });
