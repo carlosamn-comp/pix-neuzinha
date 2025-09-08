@@ -4,14 +4,14 @@ import DonationButtons from './DonationButtons.tsx';
 import DonationForm from './DonationForm.tsx';
 import './DonationCard.css';
 
-const META = 100_000;
+const META = 100_000; // A meta de arrecadação (R$ 100.000)
 
 type BalanceItem = { accountId: string; balance?: number | null };
 type ApiData = { message?: string; connectToken?: string | null; balances?: BalanceItem[] };
 
 export default function DonationCard() {
   const [selectedValue, setSelectedValue] = useState('30');
-  const [apiData, setApiData] = useState<ApiData | null>(null);
+  const [apiData, setApiData] = useState<ApiData | null>(null);  // Dados que virão do backend (message, connectToken, balances)
 
   // Busca tudo do backend (apiKey/connectToken/balances), mas usaremos só balances
   useEffect(() => {
@@ -23,20 +23,21 @@ export default function DonationCard() {
 
   // Soma dos balances vindos do backend
   const totalBalance = useMemo(() => {
-    if (!apiData?.balances) return 0;
-    return apiData.balances.reduce((acc, b) => acc + (b.balance ?? 0), 0);
+    if (!apiData?.balances) return 0;  // Se não houver balances, o total é 0
+    return apiData.balances.reduce((acc, b) => acc + (b.balance ?? 0), 0);  // Soma os balances das contas
   }, [apiData]);
 
+  // Calcula a porcentagem de progresso com base no total arrecadado
   const percent = useMemo(() => Math.min(100, (totalBalance / META) * 100), [totalBalance]);
 
   const handleDoarMensal = async () => {
-    // Aqui continua sua lógica de pagamento (se/quando você ligar ao backend)
+    // Aqui continua sua lógica de pagamento (quando você estiver pronto para integrar com o backend)
     console.log('Doação mensal selecionada:', selectedValue);
   };
 
   return (
     <div className="app-container">
-      {/* Passamos o total para a barra (A = total, B = 0) */}
+      {/* Barra de progresso que exibe a porcentagem do total arrecadado */}
       <ProgressBar balance={totalBalance} percent={percent} />
 
       <div className="donation-card">
@@ -44,7 +45,7 @@ export default function DonationCard() {
           <span>Pix</span> Neuzinha
         </div>
 
-        {/* Mostra apenas o balance total vindo do backend */}
+        {/* Exibe o total arrecadado no formato de moeda */}
         <div className="mt-2" style={{ fontSize: '0.95rem' }}>
           <strong>Total arrecadado:</strong>{' '}
           {totalBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -54,7 +55,10 @@ export default function DonationCard() {
           Todas as doações vão diretamente para a <strong>poupança da Neuzinha</strong> via Pix.
         </div>
 
+        {/* Botões para escolher o valor da doação */}
         <DonationButtons selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
+
+        {/* Formulário para efetuar a doação mensal */}
         <DonationForm handleDoarMensal={handleDoarMensal} />
       </div>
     </div>
