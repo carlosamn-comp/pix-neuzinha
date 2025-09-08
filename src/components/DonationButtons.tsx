@@ -37,7 +37,6 @@ const DonationButtons: React.FC<DonationButtonsProps> = ({ selectedValue, setSel
           R$ {v}
         </button>
       ))}
-      <button onClick={handleDonate}>Doar</button>
     </div>
   );
 };
