@@ -37,13 +37,20 @@ export default async function handler(req: any, res: any) {
         date: date.toISOString().split('T')[0] 
       },
       interval: 'MONTHLY',
+      description: 'Este pix é direcionado para a criação de uma aposentadoria digna para a Neuzinha',
+      isSandbox: false,
       fixedAmount: Number(selectedValue),
       startDate: date.toISOString().split('T')[0],
       expiresAt: '2026-12-31T03:00:00Z',
-      isRetryAccepted: false,
+      isRetryAccepted: true,
+      automaticRetriesConfiguration: {
+        retryDays: [1, 3, 7]
+      }
       recipientId: process.env.RECIPIENT_ID || "", // Recipiente de destino da doação
-      description: 'Este pix é direcionado para a criação de uma aposentadoria digna para a Neuzinha',
-      isSandbox: false,
+      schedulerConfiguration: {
+      enabled: true,
+      description: "Este pix é direcionado para a criação de uma aposentadoria digna para a Neuzinha"
+      }
     };
 
     // 3) Requisição para o Pluggy API para criar o pagamento
