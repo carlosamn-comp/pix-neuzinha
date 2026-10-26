@@ -7,7 +7,6 @@ export default async function handler(req: any, res: any) {
     }
 
     const { selectedValue } = req.body; // Recebe o valor da doação do frontend
-    const date = new Date();
 
     // Valida se o valor foi passado
     if (!selectedValue) {
@@ -29,23 +28,28 @@ export default async function handler(req: any, res: any) {
     }
     const apiKey: string = authData.apiKey;
 
-    // 2) Dados do pagamento
+    // 2) Datas: o 1º Pix é cobrado na autorização, então as mensalidades começam no mês seguinte
+    // (a Pluggy não aceita o 1º pagamento no mesmo dia do startDate)
+    const hoje = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date()); // YYYY-MM-DD no horário de Brasília
+    const [ano, mes, dia] = hoje.split('-').map(Number);
+    const ultimoDiaProxMes = new Date(Date.UTC(ano, mes + 1, 0)).getUTCDate(); // Ex.: 31/01 vira 28/02
+    const startDate = new Date(Date.UTC(ano, mes, Math.min(dia, ultimoDiaProxMes))).toISOString().split('T')[0];
+
+    // 3) Dados do pagamento
     const paymentData = {
-      firstPayment: { 
-        amount: Number(selectedValue), 
-        description: 'Primeiro pagamento', 
-        date: date.toISOString().split('T')[0] 
+      firstPayment: {
+        amount: Number(selectedValue),
+        description: 'Primeiro pagamento' // Sem date: é cobrado assim que o doador autoriza
       },
       interval: 'MONTHLY',
       description: 'Este pix é direcionado para a criação de uma aposentadoria digna para a Neuzinha',
       isSandbox: false,
       fixedAmount: Number(selectedValue),
-      startDate: date.toISOString().split('T')[0],
-      expiresAt: '2026-12-31T03:00:00Z',
+      startDate, // Sem expiresAt: a doação mensal vale até o doador cancelar
       isRetryAccepted: true,
       automaticRetriesConfiguration: {
         retryDays: [1, 3, 7]
-      }
+      },
       recipientId: process.env.RECIPIENT_ID || "", // Recipiente de destino da doação
       schedulerConfiguration: {
       enabled: true,
@@ -53,7 +57,7 @@ export default async function handler(req: any, res: any) {
       }
     };
 
-    // 3) Requisição para o Pluggy API para criar o pagamento
+    // 4) Requisição para o Pluggy API para criar o pagamento
     const options = {
       method: 'POST',
       headers: {
